@@ -1,0 +1,40 @@
+# ==========================================
+# Entornos virtuales y variables de entorno
+# ==========================================
+venv/
+env/
+.venv/
+.env
+
+# ==========================================
+# Archivos compilados de Python y caché
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================================
+# Archivos de Jupyter Notebook (si aplica)
+# ==========================================
+.ipynb_checkpoints/
+
+# ==========================================
+# Configuración local de Editores/IDEs
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==========================================
+# Archivos ocultos del Sistema Operativo
+# ==========================================
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
