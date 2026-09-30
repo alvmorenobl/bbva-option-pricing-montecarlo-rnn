@@ -34,6 +34,8 @@ __pycache__/
 .AppleDouble
 .LSOverride
 
+*.png
+
 # Windows
 Thumbs.db
 ehthumbs.db
