@@ -35,6 +35,7 @@ __pycache__/
 .LSOverride
 
 *.png
+!figuras/*.png
 
 # Windows
 Thumbs.db
@@ -44,5 +45,3 @@ Desktop.ini
 # ==========================================
 # Datos crudos y salidas regenerables
 # ==========================================
-Datos/DowJones/
-figuras/
