@@ -34,7 +34,14 @@ __pycache__/
 .AppleDouble
 .LSOverride
 
+*.png
+!figuras/*.png
+
 # Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# ==========================================
+# Datos crudos y salidas regenerables
+# ==========================================

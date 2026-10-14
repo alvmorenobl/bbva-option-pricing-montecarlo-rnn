@@ -207,4 +207,3 @@ dependencies:
   - zstd=1.5.7
   - pip:
       - protobuf==7.36.2
-prefix: C:\Users\mabaz\.conda\envs\verdeclaro_reto09
