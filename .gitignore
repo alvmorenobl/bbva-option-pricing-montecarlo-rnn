@@ -36,6 +36,7 @@ __pycache__/
 
 *.png
 !figuras/*.png
+!figuras/informe/*.png
 
 # Windows
 Thumbs.db
@@ -45,3 +46,12 @@ Desktop.ini
 # ==========================================
 # Datos crudos y salidas regenerables
 # ==========================================
+
+# Modelos entrenados (se entregan aparte, en el Drive del equipo)
+modelos/
+
+# Documentos que se entregan aparte
+verde_claro_declaracion_usoIA.pdf
+
+# Temporales del sistema
+.fuse_hidden*
