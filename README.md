@@ -1,111 +1,68 @@
-# Reto_09_Grupo_Verde_Claro
+# Reto 9 · Grupo Verde Claro · Mondragón–BBVA
 
-Cosas a tener en cuenta:
-- Los scripts **sí deben ejecutarse en el orden propuesto en este README** (a diferencia de otros retos donde son independientes), ya que cada uno consume la salida del anterior: unificación de datos → EDA → selección de cartera → simulación Montecarlo → cálculo de payoff → comparación con la RNN.
-- Se necesitan los CSVs de las 26 acciones del Dow Jones facilitados por los PMs, así como conexión a internet para completar datos vía `yfinance` (Yahoo Finance).
-- La carpeta de datos **no se sube a GitHub** (ni originales ni generados), solo a la carpeta de Drive del equipo (`R9_Entrega_EQUIPO`), tal y como exige la normativa del reto.
+Valoración de una **call asiática geométrica** sobre una cesta de tres acciones del Dow Jones (**WMT**, **MRK** y **NVDA**) con tres métodos: simulación de **Montecarlo**, la **fórmula cerrada** de BBVA y **redes neuronales recurrentes** (RNN, LSTM y GRU).
 
-## Datos
+**Repositorio:** https://github.com/marioabajas/reto09-verde_claro
 
-En estas carpetas están o se tienen que ubicar todos los datos utilizados.
+## Cómo ejecutarlo
 
-### Originales
+1. Instalar las librerías (Python 3.10 o superior). El script solo instala las que falten:
 
-Aquí se tienen que incluir los CSVs originales otorgados al principio del reto:
+   ```
+   python instalar_librerias.py
+   ```
 
-* 26 archivos CSV, uno por cada acción del Dow Jones (columnas `open`, `high`, `low`, `last`, `close`, `volume`, `date`, `symbol`, `exchange`).
+2. Copiar las carpetas **Datos/** y **modelos/** del Drive del equipo (**R9_Entrega_EQUIPO**) en la raíz del repositorio. Ni los datos ni las redes entrenadas se suben a GitHub, tal como piden las instrucciones de entrega.
+3. Ejecutar los notebooks **en este orden**, porque cada uno usa la salida del anterior. Todos leen y escriben con rutas relativas a la raíz del repositorio.
 
-### Transformados
+| Paso | Archivo | Entrada | Salida |
+|---|---|---|---|
+| 1 | **Preprocesamiento_limpieza.ipynb** | Datos/DowJones/*.csv (26 CSV originales) + Yahoo Finance | Datos/dowjones_limpio.csv |
+| 2 | **EDA.py** | Datos/DowJones/*.csv | Tablas de calidad, saltos y correlación en Datos/ y gráficos en figuras/ |
+| 3 | **seleccioncartera.ipynb** | Datos/dowjones_limpio.csv | Cartera WMT + MRK + NVDA, volatilidades σ y correlaciones ρ |
+| 4 | **Analisis_series_volatilidad_final.ipynb** | Datos/dowjones_limpio.csv | Estacionariedad, ARCH/GARCH, Datos/volatilidad_cartera.csv, Datos/correlaciones_cartera.csv y gráficos interactivos en figuras/ |
+| 5 | **montecarlo.ipynb** | σ y ρ del paso 3 (copiadas en el notebook) | Datos/resultados_montecarlo.npz (100.000 × 20 × 3 trayectorias y su payoff) |
+| 6 | **rnn.ipynb** | Datos/resultados_montecarlo.npz | Redes entrenadas en modelos/ y modelos/historial.json |
+| 7 | **resultados.ipynb** | Datos/resultados_montecarlo.npz, modelos/ y MonteCarlo_y_Formula_cerrada_25_26.ipynb | Comparación de primas: Montecarlo, red y fórmula cerrada |
+| 8 | **figuras_informe_red.py** | modelos/, modelos/historial.json y resultados.ipynb | Las 6 figuras de la red con el formato del informe, en figuras/informe/ |
 
-Aquí se ubican los datos generados durante el proceso:
+**Notas**
 
-* `dow_jones_clean.csv`: las 26 acciones unificadas, limpias y completadas con datos de Yahoo Finance.
-* `cartera_3_activos.csv`: serie histórica únicamente de las 3 acciones finalmente seleccionadas para la cartera.
-* `X_simulaciones.npy`: matriz de precios simulados por Montecarlo, de dimensiones (n_simulaciones, n_pasos, n_activos).
-* `Y_payoff.npy`: matriz de payoffs calculados a partir de `X_simulaciones.npy`, usada como target de la RNN.
+- Los pasos 1 y 3 necesitan conexión a internet para consultar Yahoo Finance. En el paso 3, los sectores ya están copiados en un diccionario fijo, así que el resultado no depende de Yahoo.
+- **rnn.ipynb** entrena todas las redes desde cero y tarda unas tres horas y media. Con las redes ya entrenadas de **modelos/** (en el Drive), **resultados.ipynb** y **figuras_informe_red.py** se pueden ejecutar directamente.
+- Todos los gráficos que dibujan los notebooks se guardan en **figuras/** al ejecutarlos. Los gráficos interactivos del análisis de series están en **figuras/index.html**.
+- **MonteCarlo_y_Formula_cerrada_25_26.ipynb** es el notebook facilitado por los profesores. **resultados.ipynb** lee de él las funciones de la fórmula cerrada sin modificarlas.
+- La simulación es reproducible: el comienzo común de 5 trimestres usa la semilla 11 y el reparto train, validación y test de la red usa la semilla 0.
 
-## Preprocesamiento
+## Estructura
 
-En este script (`Preprocesamiento.py`) se realiza:
+```
+reto09-verde_claro/
+├── Datos/                    # no se sube a GitHub; está en el Drive del equipo
+│   ├── DowJones/             # 26 CSV originales (formato marketstack)
+│   └── ...                   # datos generados por los notebooks
+├── figuras/                  # gráficos PNG de los notebooks y gráficos HTML/JS interactivos (index.html)
+│   └── informe/              # figuras de la red con el formato del informe
+├── modelos/                  # no se sube a GitHub; redes entrenadas (.pt) e historial, en el Drive
+├── Preprocesamiento_limpieza.ipynb
+├── EDA.py
+├── seleccioncartera.ipynb
+├── Analisis_series_volatilidad_final.ipynb
+├── montecarlo.ipynb
+├── rnn.ipynb
+├── resultados.ipynb
+├── MonteCarlo_y_Formula_cerrada_25_26.ipynb
+├── figuras_informe_red.py
+├── instalar_librerias.py
+└── entorno_verdeclaro_reto09.yml
+```
 
-* La lectura de los 26 CSV individuales de las acciones del Dow Jones.
-* La unificación de todos en un único DataFrame.
-* La limpieza de nulos, duplicados y formatos de fecha.
-* La descarga y cruce con datos complementarios de `yfinance` para completar el conjunto (recordemos que solo se facilitan 26 de las 30 empresas).
-* La exportación del resultado a `dow_jones_clean.csv`.
+## Resumen de resultados
 
-## EDA
-
-En este script (`EDA.py`) se hace el análisis exploratorio sobre `dow_jones_clean.csv`:
-
-* Comprobación de la frecuencia de los datos (diaria vs intradía) y agregación si procede.
-* Resumen de calidad: nulos, duplicados, rango de fechas, registros por empresa.
-* Estadística descriptiva del precio de cierre por empresa.
-* Evolución temporal de precios normalizados (base 100).
-* Cálculo de retornos logarítmicos diarios y ajuste a distribución normal.
-* Ranking de volatilidad anualizada por acción.
-* Matriz de correlación entre las 26 acciones (se reutiliza después en `Montecarlo.py` para la descomposición de Cholesky).
-* Análisis de volumen/liquidez.
-
-## Selección de cartera
-
-En `Seleccion_cartera.py` se decide, a partir de los resultados del EDA, qué 3 acciones forman la cartera subyacente de la opción:
-
-* Aplicación de los criterios cuantitativos (volatilidad, correlación, ratio de Sharpe) y cualitativos (sector, modelo de negocio) definidos por el equipo.
-* Cálculo de los pesos óptimos de la cartera (mínima varianza / máximo Sharpe, según la estrategia elegida).
-* Generación de la frontera eficiente para las 3 acciones seleccionadas.
-* Exportación de la serie histórica de las 3 acciones a `cartera_3_activos.csv`.
-
-## Series temporales
-
-En `Series_temporales.py` se hace la descomposición (tendencia, estacionalidad, residuo) de cada una de las 3 series temporales de `cartera_3_activos.csv`, para entender su comportamiento antes de simular su evolución futura.
-
-## Montecarlo
-
-En `Montecarlo.py` se genera el conjunto de datos sintéticos:
-
-* Cálculo de $S_0$, $\mu$ (tasa libre de riesgo), $\sigma$ (vector de volatilidades) y $\rho$ (matriz de correlaciones) a partir de la cartera seleccionada.
-* Descomposición de Cholesky de la matriz de correlaciones para introducir dependencia entre los movimientos brownianos simulados.
-* Simulación mediante Movimiento Browniano Geométrico de la evolución de los 3 activos a 5 años (20 pasos temporales, mínimo 1000 simulaciones).
-* Exportación de la matriz resultante a `X_simulaciones.npy`.
-
-## Payoff
-
-En `Payoff.py` se calcula, a partir de `X_simulaciones.npy`:
-
-* El payoff de la opción asiática geométrica (media geométrica de las 3 series simuladas menos el strike, con el `[...]+`).
-* El descuento a valor presente (prima) para distintos instantes del intervalo de 5 años.
-* Exportación de los payoffs a `Y_payoff.npy`.
-
-## FormulaCerradaBBVA
-
-En `FormulaCerradaBBVA.py` se implementa la fórmula analítica cerrada facilitada/investigada para la valoración de la call asiática geométrica, usada como método de referencia adicional frente a Montecarlo.
-
-## RNN
-
-En `RNN.py` se entrena el modelo basado en datos:
-
-* Preparación de `X_simulaciones.npy` (input) e `Y_payoff.npy` (target) en conjuntos de train/test.
-* Definición y entrenamiento de distintas arquitecturas recurrentes (RNN simple, LSTM, GRU, Bi-LSTM) para comparar cuál predice mejor el payoff.
-* Selección de la arquitectura final según error de predicción.
-
-## Comparacion_metodos
-
-En `Comparacion_metodos.py` se comparan los resultados de:
-
-* La media geométrica + Montecarlo.
-* La fórmula cerrada de BBVA.
-* La RNN entrenada.
-
-Se generan la tabla de predicción del valor de la opción en el momento *t* y los criterios de evaluación del error (validación cruzada incluida), tal y como exige el entregable.
-
-## Visualización
-
-Carpeta `viz/` con los gráficos interactivos en HTML/JS del proyecto (`index.html`, `charts.js`), usados en el informe y en la presentación.
-
-## Gestión del proyecto
-
-Carpeta `docs/gestion_proyecto/` con las evidencias del proceso de gestión (actas, desglose de trabajo, políticas de equipo definidas en el Hito 0).
+- **Cartera:** WMT + MRK + NVDA, la primera de 780 tríos candidatos (dos acciones estables y una volátil, sectores distintos y correlación media ≤ 0,40).
+- **Montecarlo:** prima de 0,3014 ± 0,0029 (IC al 95 %) con 100.000 simulaciones.
+- **Red neuronal:** la GRU de 2 capas y 64 neuronas es la mejor. En test, su error medio en el payoff es de 0,0008 y su prima queda un 0,053 % por encima del Montecarlo de las mismas trayectorias.
+- **Fórmula cerrada:** valora otro payoff (la media geométrica conjunta de la cesta) y se usa como referencia.
 
 ## Equipo
 
@@ -117,5 +74,3 @@ Carpeta `docs/gestion_proyecto/` con las evidencias del proceso de gestión (act
 | Ander Sainz de la Maza |
 | Iñigo Barrenechea |
 | Mario Abajas |
-
-**Repositorio:** https://github.com/mario-cr7/reto09-verde_claro
