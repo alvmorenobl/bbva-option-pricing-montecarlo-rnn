@@ -24,12 +24,11 @@ Valoración de una **call asiática geométrica** sobre una cesta de tres accion
 | 5 | **montecarlo.ipynb** | σ y ρ del paso 3 (copiadas en el notebook) | Datos/resultados_montecarlo.npz (100.000 × 20 × 3 trayectorias y su payoff) |
 | 6 | **rnn.ipynb** | Datos/resultados_montecarlo.npz | Redes entrenadas en modelos/ y modelos/historial.json |
 | 7 | **resultados.ipynb** | Datos/resultados_montecarlo.npz, modelos/ y MonteCarlo_y_Formula_cerrada_25_26.ipynb | Comparación de primas: Montecarlo, red y fórmula cerrada |
-| 8 | **figuras_informe_red.py** | modelos/, modelos/historial.json y resultados.ipynb | Las 6 figuras de la red con el formato del informe, en figuras/informe/ |
 
 **Notas**
 
 - Los pasos 1 y 3 necesitan conexión a internet para consultar Yahoo Finance. En el paso 3, los sectores ya están copiados en un diccionario fijo, así que el resultado no depende de Yahoo.
-- **rnn.ipynb** entrena todas las redes desde cero y tarda unas tres horas y media. Crea la carpeta **modelos/** y guarda en ella las redes (.pt) y **historial.json**, que son lo que leen después **resultados.ipynb** y **figuras_informe_red.py**. **resultados.ipynb** se entrega ya ejecutado, así que sus salidas se pueden consultar sin entrenar nada.
+- **rnn.ipynb** entrena todas las redes desde cero y tarda unas tres horas y media. Crea la carpeta **modelos/** y guarda en ella las redes (.pt) y **historial.json**, que es lo que lee después **resultados.ipynb**. **resultados.ipynb** se entrega ya ejecutado, así que sus salidas se pueden consultar sin entrenar nada.
 - Todos los gráficos que dibujan los notebooks están guardados en **figuras/**. Los gráficos interactivos del análisis de series están en **figuras/index.html**.
 - **MonteCarlo_y_Formula_cerrada_25_26.ipynb** es el notebook facilitado por los profesores. **resultados.ipynb** lee de él las funciones de la fórmula cerrada sin modificarlas.
 - La simulación es reproducible: el comienzo común de 5 trimestres usa la semilla 11 y el reparto train, validación y test de la red usa la semilla 0.
@@ -52,7 +51,6 @@ reto09-verde_claro/
 ├── rnn.ipynb
 ├── resultados.ipynb
 ├── MonteCarlo_y_Formula_cerrada_25_26.ipynb
-├── figuras_informe_red.py
 ├── instalar_librerias.py
 └── entorno_verdeclaro_reto09.yml
 ```
