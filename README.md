@@ -41,7 +41,6 @@ reto09-verde_claro/
 │   ├── DowJones/             # 26 CSV originales (formato marketstack)
 │   └── ...                   # datos generados por los notebooks
 ├── figuras/                  # gráficos PNG de los notebooks y gráficos HTML/JS interactivos (index.html)
-│   └── informe/              # figuras de la red con el formato del informe
 ├── modelos/                  # no se entrega; lo crea rnn.ipynb con las redes entrenadas (.pt) e historial
 ├── Preprocesamiento_limpieza.ipynb
 ├── EDA.py
