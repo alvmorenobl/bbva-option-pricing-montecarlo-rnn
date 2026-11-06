@@ -55,3 +55,6 @@ verde_claro_declaracion_usoIA.pdf
 
 # Temporales del sistema
 .fuse_hidden*
+
+# Datos originales y generados (se entregan en el Drive del equipo)
+Datos/
