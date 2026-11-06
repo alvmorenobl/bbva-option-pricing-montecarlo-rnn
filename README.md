@@ -12,7 +12,7 @@ Valoración de una **call asiática geométrica** sobre una cesta de tres accion
    python instalar_librerias.py
    ```
 
-2. Copiar las carpetas **Datos/** y **modelos/** del Drive del equipo (**R9_Entrega_EQUIPO**) en la raíz del repositorio. Ni los datos ni las redes entrenadas se suben a GitHub, tal como piden las instrucciones de entrega.
+2. Copiar la carpeta **Datos/** del Drive del equipo (**R9_Entrega_EQUIPO**) en la raíz del repositorio. Los datos no se suben a GitHub, tal como piden las instrucciones de entrega. Las redes entrenadas no se entregan: las genera **rnn.ipynb** en la carpeta **modelos/**.
 3. Ejecutar los notebooks **en este orden**, porque cada uno usa la salida del anterior. Todos leen y escriben con rutas relativas a la raíz del repositorio.
 
 | Paso | Archivo | Entrada | Salida |
@@ -29,8 +29,8 @@ Valoración de una **call asiática geométrica** sobre una cesta de tres accion
 **Notas**
 
 - Los pasos 1 y 3 necesitan conexión a internet para consultar Yahoo Finance. En el paso 3, los sectores ya están copiados en un diccionario fijo, así que el resultado no depende de Yahoo.
-- **rnn.ipynb** entrena todas las redes desde cero y tarda unas tres horas y media. Con las redes ya entrenadas de **modelos/** (en el Drive), **resultados.ipynb** y **figuras_informe_red.py** se pueden ejecutar directamente.
-- Todos los gráficos que dibujan los notebooks se guardan en **figuras/** al ejecutarlos. Los gráficos interactivos del análisis de series están en **figuras/index.html**.
+- **rnn.ipynb** entrena todas las redes desde cero y tarda unas tres horas y media. Crea la carpeta **modelos/** y guarda en ella las redes (.pt) y **historial.json**, que son lo que leen después **resultados.ipynb** y **figuras_informe_red.py**. **resultados.ipynb** se entrega ya ejecutado, así que sus salidas se pueden consultar sin entrenar nada.
+- Todos los gráficos que dibujan los notebooks están guardados en **figuras/**. Los gráficos interactivos del análisis de series están en **figuras/index.html**.
 - **MonteCarlo_y_Formula_cerrada_25_26.ipynb** es el notebook facilitado por los profesores. **resultados.ipynb** lee de él las funciones de la fórmula cerrada sin modificarlas.
 - La simulación es reproducible: el comienzo común de 5 trimestres usa la semilla 11 y el reparto train, validación y test de la red usa la semilla 0.
 
@@ -43,7 +43,7 @@ reto09-verde_claro/
 │   └── ...                   # datos generados por los notebooks
 ├── figuras/                  # gráficos PNG de los notebooks y gráficos HTML/JS interactivos (index.html)
 │   └── informe/              # figuras de la red con el formato del informe
-├── modelos/                  # no se sube a GitHub; redes entrenadas (.pt) e historial, en el Drive
+├── modelos/                  # no se entrega; lo crea rnn.ipynb con las redes entrenadas (.pt) e historial
 ├── Preprocesamiento_limpieza.ipynb
 ├── EDA.py
 ├── seleccioncartera.ipynb
